@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>gamma version</title>
+    <style>
+        body {
+            /*get a background image*/
+            background-image: url('https://img.freepik.com/premium-vector/abstract-background-dark-color-overlay-with-modern-design-vector-illustration_11700-564.jpg?w=900');
+            background-color: black;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        /*header style logo and title*/
+        p2 {
+        /*text style*/
+        color: #3498db;
+        font-size: 50px;
+        text-align: center;
+        font-family: Serif;
+        position: absolute;
+        cursor: pointer;
+        top: 5%;
+        left: 3%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+    p3 {
+            /*text style*/
+        color: gray;
+        font-size: 13px;
+        position: absolute;
+        cursor: pointer;
+        font-family: cursive;
+        top: 5%;
+        left: 8.5%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+        /*instruction style "cover the areas"*/
+        p1 {
+            color: #3498db;
+            font-size: 25px;
+            text-align: center;
+            margin: 0;
+            position: absolute;
+            top: 6%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        b {
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            position: absolute;
+            left: 20%;
+            top: 32%;
+            font-size: 20px;
+            color: white;
+        }
+        /*canvas style*/
+        #canvas {
+            border: 1px solid black;
+            margin-bottom: 10px;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            cursor: crosshair;
+        }
+        #clear { 
+            position: absolute;
+            left: 35%; 
+            top: 90%;
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 4px;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            
+        }
+        #buttun { 
+            position: absolute;
+            top:90%;
+            left:55%;   
+            padding: 12px 30px;
+            display: inline-block;
+            border-radius: 4px;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;            
+        }
+
+        /*size buttunes style*/
+        #size_5,
+        #size_10,
+        #size_20,
+        #size_50,
+        #size_100 {
+            /*buttun style*/
+            display: inline-block;
+            height: 50px;
+            width: 70px;
+            border-radius: 4px;
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        #size_5 {
+            position: absolute;
+            left: 20%;
+            top: 40%;
+
+        }
+
+        #size_10 {
+            position: absolute;
+            left: 20%;
+            top: 48.3%;
+        }
+
+        #size_20 {
+            position: absolute;
+            left: 20%;
+            top: 56.6%;
+        }
+
+        #size_50 {
+            position: absolute;
+            left: 20%;
+            top: 64.9%;
+        }
+
+        #size_100 {
+            position: absolute;
+            left: 20%;
+            top: 73.2%;
+        }
+
+
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <a href="/">
+        <p2>G</p2>
+        <p3>uardian<br>uard your images</p3>
+    </a>
+    <br>
+    <p1>cover the areas you want to keep untouched</p1>
+    <br>
+    <canvas id="canvas" width="512" height="512"></canvas>
+    <button id="buttun" onclick="buttun_click()">Submit</button>
+    <button id="size_5">1</button>
+    <button id="size_10">2</button>
+    <button id="size_20">3</button>
+    <button id="size_50">4</button>
+    <button id="size_100">5</button>
+    <button id="clear">Clear</button>
+    <b> Brush Size</b>
+    <form id="canvasForm" method="POST" action="/settings">
+        <input type="hidden" id="canvasData" name="canvasData" value="">
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('canvas');
+            canvas.style.backgroundImage = "url(data:image/jpeg;base64,{{ img_data }})";
+            const context = canvas.getContext('2d');
+            const test = document.getElementById('b');
+
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            let lineWidth = 20;
+
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            canvas.addEventListener('mouseenter', changeCursor);
+
+            function startDrawing(e) {
+                isDrawing = true;
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+
+                context.beginPath();
+                context.moveTo(lastX, lastY);
+                context.lineTo(e.offsetX, e.offsetY);
+                context.lineWidth = lineWidth;
+                context.strokeStyle = '#000000';
+                context.lineCap = 'round';
+                context.stroke();
+
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+
+            function stopDrawing() {
+                isDrawing = false;
+            }
+
+            function changeCursor() {
+                const cursorSize = lineWidth;
+                canvas.style.cursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="${cursorSize}" height="${cursorSize}"><circle cx="${cursorSize / 2}" cy="${cursorSize / 2}" r="${cursorSize / 2}" fill="white" /></svg>') ${cursorSize / 2} ${cursorSize / 2}, auto`;
+            }
+
+            size_5.addEventListener('click', () => {
+                lineWidth = 5;
+                changeCursor();
+            });
+
+            size_10.addEventListener('click', () => {
+                lineWidth = 10;
+                changeCursor();
+            });
+
+            size_20.addEventListener('click', () => {
+                lineWidth = 20;
+                changeCursor();
+            });
+
+            size_50.addEventListener('click', () => {
+                lineWidth = 50;
+                changeCursor();
+            });
+
+            size_100.addEventListener('click', () => {
+                lineWidth = 100;
+                changeCursor();
+            });
+            clear.addEventListener('click', () => {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            });
+
+        });
+
+        function buttun_click() {
+            // change the background to be white and return mask
+            const newCanvas = document.createElement('canvas');
+            newCanvas.width = 512;
+            newCanvas.height = 512;
+            const cone = newCanvas.getContext('2d');
+            cone.fillStyle = 'white';
+            cone.fillRect(0, 0, 512, 512);
+            cone.drawImage(canvas, 0, 0);
+            var imageDataURL = newCanvas.toDataURL("image/jpeg");
+            document.getElementById("canvasData").value = imageDataURL;
+            document.getElementById("canvasForm").submit();
+        }
+    </script>
+</body>
+
+</html>

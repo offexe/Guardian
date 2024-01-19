@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>gamma version</title>
+    <style>
+        body {
+            /*get a background image*/
+            background-image: url("https://img.freepik.com/premium-vector/abstract-background-dark-color-overlay-with-modern-design-vector-illustration_11700-564.jpg?w=900");
+            background-color: black;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        p1 {
+            /*text style*/
+            color: #3498db;
+            font-size: 30px;
+            text-align: center;
+            margin: 0;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        /*header style logo and title*/
+        p2 {
+        /*text style*/
+        color: #3498db;
+        font-size: 50px;
+        text-align: center;
+        font-family: Serif;
+        position: absolute;
+        cursor: pointer;
+        top: 5%;
+        left: 3%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+    p3 {
+            /*text style*/
+        color: gray;
+        font-size: 13px;
+        position: absolute;
+        cursor: pointer;
+        font-family: cursive;
+        top: 5%;
+        left: 8.5%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+        h {
+            color: #3498db;
+            font-size: 60px;
+            text-align: center;
+            position: absolute;
+            top: 0.1%;
+            left: 42%;
+        }
+
+        input[type="submit"] {
+            /*buttun style of submit*/
+            padding: 12px 40px;
+            border-radius: 8px;
+            background-color: #3498db;
+            color: black;
+            border: 1px solid gray;
+            font-size: 20px;
+            cursor: pointer;
+            margin: 0;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        input[type=submit]:hover{
+            background-color: #2980b9;
+        }
+
+        input[type="file"] {
+            /*upliad image style bar to upload image*/
+            cursor: pointer;
+            position: absolute;
+            background-color: white;
+            color: black;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <!--header code title and logo-->
+    <h>Guardian</h>
+    <a href="/">
+        <p2>G</p2>
+        <p3>uardian<br />uard your images</p3>
+    </a>
+    <!--this code allow user to upload image and goes to mask page-->
+    <p1>Upload an Image</p1>
+    <form action="/mask" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" class="form-control" autocomplete="off" accept="image/jpeg, image/png"
+            required />
+        <br />
+        <input type="submit" value="Get Started" />
+    </form>
+</body>
+
+</html>

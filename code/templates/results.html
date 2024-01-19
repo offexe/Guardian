@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>gamma version</title>
+    <style>
+        body {
+            background-image: url("https://img.freepik.com/premium-vector/abstract-background-dark-color-overlay-with-modern-design-vector-illustration_11700-564.jpg?w=900");
+            background-color: black;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        /* Three image containers (use 25% for four, and 50% for two, etc) */
+        .column {
+            float: left;
+            width: 25%;
+            padding: 5px;
+        }
+
+        /* Clear floats after image containers */
+        .row {
+            display: flex;
+        }
+
+        /*header style logo and title*/
+        p2 {
+        /*text style*/
+        color: #3498db;
+        font-size: 50px;
+        text-align: center;
+        font-family: Serif;
+        position: absolute;
+        cursor: pointer;
+        top: 5%;
+        left: 3%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+    p3 {
+        /*text style*/
+        color: gray;
+        font-size: 13px;
+        position: absolute;
+        cursor: pointer;
+        font-family: cursive;
+        top: 5%;
+        left: 8.5%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    #goBackButton {
+        padding: 12px 24px;
+        border-radius: 4px;
+        background-color: #3498db;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        position: absolute;
+        left: 88%;
+        top: 4%;
+    }
+
+        h {
+            color: #3498db;
+            font-size: 60px;
+            position: absolute;
+            top: 0.1%;
+            left: 40%;
+        }
+
+        h2 {
+            color: #3498db;
+        }
+
+        p {
+            color: #3498db;
+        }
+
+        button {
+            cursor: pointer;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 15px;
+            color: #fff;
+            background-color: #3498db;
+        }
+    </style>
+</head>
+
+<body>
+    <h>Guardian</h>
+    <a href="/">
+        <p2>G</p2>
+        <p3>uardian<br />uard your images</p3>
+    </a>
+    <button id="goBackButton" type=button >Back to settings</button>
+    <br /><br /><br /><br />
+    <div class="row">
+        {% for image in images_list %}
+            <div class="column">
+                <h2>{{ image.name }}</h2>
+                <img src="data:image/jpeg;base64,{{ image.img }}" alt="{{ image.name }}" height="256" width="256" />
+                <br />
+                <a href="data:image/jpeg;base64,{{ image.img }}" download><button>Download</button></a>
+            </div>
+            {% if loop.index % 4 == 0 %}
+                </div><div class="row">
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <script>
+        document.getElementById("goBackButton").addEventListener("click", function() {
+            window.history.back();
+        });
+    </script>
+
+</body>
+
+</html>
